@@ -20,10 +20,10 @@
     # change project data
     if(isset($_POST["change"])){
         $change = $_POST["change"];
-        $change_stmt = $db->prepare("UPDATE projects SET title =:pTitle, description =:pDesc, created_at =:pCreated WHERE project_id =:pId");
+        $change_stmt = $db->prepare("UPDATE projects SET title =:pTitle, description =:pDesc WHERE project_id =:pId");
         $change_stmt->bindParam(':pTitle', $_POST["change_title"], PDO::PARAM_INT);
         $change_stmt->bindParam(':pDesc', $_POST["change_desc"], PDO::PARAM_INT);
-        $change_stmt->bindParam(':pCreated', $_POST["change_created"], PDO::PARAM_INT);
+      #$change_stmt->bindParam(':pCreated', date('l dS \o\f F Y h:i:s A', strtotime($_POST["change_created"])), PDO::PARAM_INT);
         $change_stmt->bindParam(':pId', $change, PDO::PARAM_INT);
         $change_stmt->execute();
         header("Refresh:0");
@@ -72,11 +72,11 @@
         <div class="text-center">
         <form class="form border d-inline-block p-3 rounded text-start" action="" method="post">
             <label for="title">Name</label><br>
-            <input type="text" value="<?php echo $projects[$crazy_index]["title"]; ?>"><br><br>
+            <input name="change_title" type="text" value="<?php echo $projects[$crazy_index]["title"]; ?>"><br><br>
             <label for="title">Beschreibung</label><br>
-            <input type="text" value="<?php echo $projects[$crazy_index]["description"]; ?>"><br><br>
-            <label for="title">Erstellt</label><br>
-            <input type="date" value="<?php echo date('Y-m-d', strtotime($projects[$crazy_index]["created_at"])); ?>"><br><br>
+            <input name="change_desc" type="text" value="<?php echo $projects[$crazy_index]["description"]; ?>"><br><br>
+            
+            <input type="hidden" name="change" value="true">
             <input type="submit" class="btn btn-primary btn-sm" value="Aktualisieren">
         </form>
         </div>
